@@ -1,0 +1,318 @@
+﻿<data 
+    wiki-url="http://simile.mit.edu/shelf/"
+    wiki-section="Simile JFK Timeline"
+    dateTimeFormat="iso8601"
+    >
+    <!-- Sources:
+        http://roswell.fortunecity.com/angelic/96/pctime.htm
+    -->
+	
+	<event>
+		<start>2012-06-05T02:00:00</start>
+		<end>Sat Jun 5 2012 00:00:00 GMT-1500</end>
+		<title>This is some div content 2 </title>
+		<eventID>16</eventID>
+		<events>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<title>This is title of sub event</title>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0900</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<title>This is title of sub event</title>
+				<id>654</id>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0400</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<title>This is title of sub event</title>
+				<id>654</id>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0300</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<id>654</id>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0200</start>
+				<title>thisi child</title>
+			</ev>
+		</events>
+	</event>
+	<event>
+		<start>Sat Jun 3 2012 00:00:00 GMT-1000</start>
+		<end>Sat Jun 4 2012 00:00:00 GMT-1500</end>
+		<title>This is some div content </title>
+		<eventID>17</eventID>
+		<events>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
+				<title>thisi child</title>
+			</ev>
+			
+		</events>
+	</event>
+	<event>
+		<start>Sat Jun 5 2012 00:00:00 GMT-1000</start>
+		<end>Sat Jun 6 2012 00:00:00 GMT-1500</end>
+		<title>This is some div content 31 </title>
+		<eventID>18</eventID>
+		<events>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<end>Sat Jun 2 2012 02:00:00 GMT-1500</end>
+				<title>thisi child</title>
+				<isDuration>false</isDuration>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 15:00:00 GMT-0800</start>
+				<end>Sat Jun 1 2012 15:30:00 GMT-1500</end>
+				<title>thisi child</title>
+				<isDuration>false</isDuration>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 04:00:00 GMT-0800</start>
+				<end>Sat Jun 1 2012 05:50:00 GMT-1500</end>
+				<title>thisi child</title>
+				<isDuration>false</isDuration>
+			</ev>
+			<ev>
+				<end>Sat Jun 1 2012 16:00:00 GMT-1500</end>
+				<start>Sat Jun 1 2012 15:00:00 GMT-0800</start>
+				<title>thisi child</title>
+				<isDuration>false</isDuration>
+			</ev>
+			
+		</events>
+	</event>
+	<event>
+		<start>Sat Jun 2 2012 00:00:00 GMT-1000</start>
+		<end>Sat Jun 2 2012 00:00:00 GMT-1500</end>
+		<title>This is some div content 22 </title>
+		<isDuration>true</isDuration>
+		<eventID>19</eventID>
+		<events>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0900</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0400</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0300</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0200</start>
+				<title>thisi child</title>
+			</ev>
+		</events>
+	</event>
+	<event>
+		<start>Sat Jun 2 2012 00:00:00 GMT-1140</start>
+		<end>Sat Jun 2 2012 00:00:00 GMT-1600</end>
+		<title>This is some div content 22 </title>
+		<isDuration>true</isDuration>
+		<eventID>19</eventID>
+		<events>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0900</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0400</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0300</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0200</start>
+				<title>thisi child</title>
+			</ev>
+		</events>
+	</event>
+	<event>
+		<start>Sat Jun 2 2012 00:00:00 GMT-1130</start>
+		<end>Sat Jun 2 2012 00:00:00 GMT-1500</end>
+		<title>This is some div content 22 </title>
+		<eventID>36</eventID>
+		<isDuration>true</isDuration>
+		<events>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+				<isDuration>false</isDuration>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0900</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0400</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0300</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0200</start>
+				<title>thisi child</title>
+			</ev>
+		</events>
+	</event>
+	<event>
+		<start>Sat Jun 2 2012 00:00:00 GMT-1100</start>
+		<end>Sat Jun 2 2012 00:00:00 GMT-1500</end>
+		<title>This is some div content 22 </title>
+		<eventID>40</eventID>
+		<isDuration>true</isDuration>
+		<events>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev><ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev><ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0900</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0400</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0300</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0200</start>
+				<title>thisi child</title>
+			</ev>
+		</events>
+	</event>
+	<event>
+		<start>Sat Jun 2 2012 00:00:00 GMT-1000</start>
+		<end>Sat Jun 2 2012 00:00:00 GMT-1500</end>
+		<title>This is some div content 22 </title>
+		<eventID>19</eventID>
+		<events>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0900</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0400</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0300</start>
+				<title>thisi child</title>
+			</ev>
+			<ev>
+				<start>Sat Jun 1 2012 00:00:00 GMT-0200</start>
+				<title>thisi child</title>
+			</ev>
+		</events>
+	</event>
+	
+</data>

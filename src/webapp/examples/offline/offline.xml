@@ -1,0 +1,20 @@
+﻿<data 
+    wiki-url="http://simile.mit.edu/shelf/"
+    wiki-section="Simile JFK Timeline"
+    dateTimeFormat="iso8601"
+    >
+    <!-- Sources:
+        http://roswell.fortunecity.com/angelic/96/pctime.htm
+    -->
+    <event start="Sat May 20 1961 00:00:00 GMT-0600"
+        title="'Bay of Pigs' Invasion"
+        >
+        </event>
+    <event start="Wed May 01 1963 00:00:00 GMT-0600" end="Sat Jun 01 1963 00:00:00 GMT-0600" isDuration="true"
+        title="Oswald moves to New Orleans"
+        >
+        Oswald moves to New Orleans, and finds employment at the William 
+        B. Riley Coffee Company. &lt;i&gt;ref. Treachery in Dallas, p 320&lt;/i&gt;
+        </event>
+	<event Delavec="Burek" Varnostnik="103111" title="CMI Title" Dan="23" start="2012-05-15T02:00:00" end1="2012-05-16T08:00:00" Ure="06:00:00" Vodja="Burek Vodja" description="Description of this even"></event>
+</data>
