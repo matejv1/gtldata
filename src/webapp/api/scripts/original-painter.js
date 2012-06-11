@@ -347,12 +347,17 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
         return self._onClickInstantEvent(iconElmtData.elmt, domEvt, evt);
     };
 	
+	/*
 	var clickHandlerByID = function(elmt, domEvt, target) {
         return self._onClickInstantEventByID(iconElmtData.elmt, domEvt, evt);
     };
+	*/
 	
+	var clickHandlerQueryByID = function(elmt, domEvt, target) {
+        return self._onClickInstantEventQueryByID(iconElmtData.elmt, domEvt, evt);
+    };
 	
-	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerByID);
+	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerQueryByID);
 	
 	//SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mouseover", clickHandler);
     //SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
@@ -647,6 +652,13 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
 };
 
 
+Timeline.OriginalEventPainter.prototype._onClickInstantEventQueryByID = function(icon,domEvt,evt){
+	var c = SimileAjax.DOM.getPageCoordinates(icon); //GET ICON CONRDINATES ON MAP
+	
+	tl.getBand(0)._eventSource.clear(); //CLEAR ALL EVENTS ON TIMELINE
+	
+	eventSource.XMLQueryByID(evt.getID());
+}	
 	
 Timeline.OriginalEventPainter.prototype._onClickInstantEventByID = function(icon, domEvt, evt) {
 	var c = SimileAjax.DOM.getPageCoordinates(icon);
@@ -662,13 +674,16 @@ Timeline.OriginalEventPainter.prototype._onClickInstantEventByID = function(icon
 	domEvt.cancelBubble = false;
 	
 	tl.getBand(0)._eventSource.clear();
-	console.log("OFFLIEN STARTING LOAD BY ID : " + evt.getID());
+	
+	
+	
 	tl.loadXML("offlineV2.xml", function(xml, url) { eventSource.loadXMLByID(xml, url, evt.getID()); });
 	
 	//tl.getBand(0).paint();
 	
 	//SimileAjax.DOM.cancelEvent(domEvt);
-	return false;
+	SimileAjax.DOM.cancelEvent(domEvt);
+    return false;
 };
 
 Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {

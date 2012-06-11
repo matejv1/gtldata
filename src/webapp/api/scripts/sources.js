@@ -2,7 +2,8 @@
  *  Default Event Source
  *==================================================
  */
-
+var loadedXML;
+var eventsArray = [];
 
 Timeline.DefaultEventSource = function(eventIndex) {
     this._events = (eventIndex instanceof Object) ? eventIndex : new SimileAjax.EventIndex();
@@ -35,7 +36,6 @@ Array.prototype.groupBy = function(keyName) {
 
 
 
-var eventsArray = [];
 Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
     var base = this._getBaseURL(url);
     
@@ -107,7 +107,73 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
         this._fire("onAddMany", []);
     }
 };
-var custom;
+
+
+
+Timeline.DefaultEventSource.prototype.XMLQueryByID = function(evtID) {
+	
+	var dateTimeFormat = loadedXML.documentElement.getAttribute("date-time-format");
+    var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
+    
+	var node;
+    var added = false;
+	var defaultEvent = this;
+	$(loadedXML).find("eventID").each(function(){
+		
+		if($(this).text() == evtID){
+
+			$(this).siblings("events").children().each(function(){
+				node = $(this);
+				var description = "";
+				
+				console.log( node.find("start").first().text()) ;
+				
+				
+				
+				var isDuration = false;
+				
+				
+				var instant = true;
+				var evt = new Timeline.DefaultEventSource.Event( {
+							  id: node.find("eventID").first().text(),
+						   start: parseDateTimeFunction(node.find("start").first().text()),
+							 end: parseDateTimeFunction(node.find("end").first().text()),
+					 latestStart: parseDateTimeFunction(node.attr("latestStart")),
+					 earliestEnd: parseDateTimeFunction(node.attr("earliestEnd")),
+						 instant: instant,
+							text: node.find("title").text(),
+					 description: description,
+						   color: node.attr("color"),
+					   textColor: node.attr("textColor"),
+					   hoverText: node.attr("hoverText"),
+					   classname: node.attr("classname"),
+					   tapeImage: node.attr("tapeImage"),
+					  tapeRepeat: node.attr("tapeRepeat"),
+						 caption: node.attr("caption"),
+						 eventID: node.attr("eventID"),
+						trackNum: node.attr("trackNum")
+				});
+
+				evt._node = node;
+				evt.getProperty = function(name) {
+					return this._node.getAttribute(name);
+				};
+				
+
+				defaultEvent._events.add(evt);
+				
+				added = true;
+			});
+			
+		}
+
+	});
+
+    if (added) {
+        this._fire("onAddMany", []);
+    }
+	
+}
 
 Timeline.DefaultEventSource.prototype.loadXMLV2 = function(xml, url) {
     var base = this._getBaseURL(url);
@@ -119,7 +185,7 @@ Timeline.DefaultEventSource.prototype.loadXMLV2 = function(xml, url) {
     var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
 
     var node = xml.documentElement.firstChild;
-	custom = xml;
+	loadedXML = xml;
     var added = false;
     while (node != null) {
         if (node.nodeType == 1) {
@@ -131,10 +197,10 @@ Timeline.DefaultEventSource.prototype.loadXMLV2 = function(xml, url) {
 			var isDuration = null;
 			try{
 				isDuration = node.getElementsByTagName("isDuration")[0].childNodes[0].nodeValue;
-				console.log("success" + isDuration );
+				console.log("success isDuration " + isDuration );
 			}
 			catch(e){
-				console.log("error");
+				console.log("error isDuration");
 				isDuration = null;
 			}
 
@@ -147,7 +213,7 @@ Timeline.DefaultEventSource.prototype.loadXMLV2 = function(xml, url) {
             var evt = new Timeline.DefaultEventSource.Event( {
                           id: node.getElementsByTagName("eventID")[0].childNodes[0].nodeValue,
                        start: parseDateTimeFunction(node.getElementsByTagName("start")[0].childNodes[0].nodeValue),
-                         end: parseDateTimeFunction(node.getElementsByTagName("end")[0].childNodes[0].nodeValue),
+                         end: parseDateTimeFunction($(node).find("end").text()),
                  latestStart: parseDateTimeFunction(node.getAttribute("latestStart")),
                  earliestEnd: parseDateTimeFunction(node.getAttribute("earliestEnd")),
                      instant: instant,
@@ -207,41 +273,30 @@ Timeline.DefaultEventSource.prototype.loadXMLByID = function(xml, url, evtID) {
     var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
 
     var node = xml.documentElement.firstChild;
-	custom = xml;
+	loadedXML = xml;
     var added = false;
 	
 	var eventsCounter = $(xml).find("eventID");
+
 	
 	$(xml).find("eventID").each(function(){
-		console.log($(this).text());
+		console.log($(this).text() + " each eventID + " + evtID);
 		if($(this).text() == evtID){
-			console.log("IT IS ");
+			//console.log("IT IS ");
+			console.log("Number of events children : " + $(this).siblings("events").children().length);
 			$(this).siblings("events").children().each(function(){
+				
 				node = $(this);
 				var description = "";
-				
 				// instant event: default is true. Or use values from isDuration or durationEvent
 				var isDuration = false;
-				try{
-					isDuration = node.find("isDuration").text();
-					console.log("success" + isDuration );
-				}
-				catch(e){
-					console.log("error");
-					isDuration = null;
-				}
-
-				console.log( node + "S : " + node.find("start").text() + " - E : " + node.find("end").text());
+				//console.log( node + "S : " + node.find("start").text() + " - E : " + node.find("end").text());
 				
-				var instant = (isDuration === null &&
-							   node.attr("durationEvent") === null) ||
-							  isDuration == "false" ||
-							  node.attr("durationEvent") == "false";
-				console.log(instant);
+				var instant = true;
 				var evt = new Timeline.DefaultEventSource.Event( {
-							  id: node.find("id").text(),
-						   start: parseDateTimeFunction(node.find("start").text()),
-							 end: parseDateTimeFunction(node.find("end").text()),
+							  id: node.find("eventID").first().text(),
+						   start: parseDateTimeFunction(node.find("start").first().text()),
+							 end: parseDateTimeFunction(node.find("end").first().text()),
 					 latestStart: parseDateTimeFunction(node.attr("latestStart")),
 					 earliestEnd: parseDateTimeFunction(node.attr("earliestEnd")),
 						 instant: instant,
@@ -273,6 +328,7 @@ Timeline.DefaultEventSource.prototype.loadXMLByID = function(xml, url, evtID) {
 			});
 			
 		}
+
 	});
 
 	/*
@@ -300,7 +356,7 @@ Timeline.DefaultEventSource.prototype.loadXMLGroup = function(xml, url) {
     var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
 
     var node = xml.documentElement.firstChild;
-	custom = xml;
+	loadedXML = xml;
     var added = false;
 	
 	
