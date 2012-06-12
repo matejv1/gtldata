@@ -108,6 +108,81 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
     }
 };
 
+//loadXMLByjQuery 
+//using jQuery you search throught xml response
+Timeline.DefaultEventSource.prototype.loadXMLByjQuery = function(xml, url) {
+    var base = this._getBaseURL(url);
+    
+    var wikiURL = xml.documentElement.getAttribute("wiki-url");
+    var wikiSection = xml.documentElement.getAttribute("wiki-section");
+
+    var dateTimeFormat = xml.documentElement.getAttribute("date-time-format");
+    var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
+	loadedXML = xml;
+    var node = xml.documentElement.firstChild;
+    var added = false;
+    while (node != null) {
+        if (node.nodeType == 1) {
+            var description = "";
+            if (node.firstChild != null && node.firstChild.nodeType == 3) {
+                description = $(node).children("description");
+            }
+            // instant event: default is true. Or use values from isDuration or durationEvent
+            var instant = ($(node).children("isDuration").text()  === null &&
+                           $(node).children("durationEvent").text() === null) ||
+                          $(node).children("isDuration").text() == "false" ||
+                          $(node).children("durationEvent").text() == "false";
+            
+            var evt = new Timeline.DefaultEventSource.SecEvent( {
+                          id: $(node).children("eventID").text(),
+                       start: parseDateTimeFunction($(node).children("start").text()),
+                         end: parseDateTimeFunction($(node).children("end").text()),
+                 latestStart: parseDateTimeFunction($(node).children("latestStart").text()),
+                 earliestEnd: parseDateTimeFunction($(node).children("earliestEnd").text()),
+                     instant: instant,
+                        text: $(node).children("title").text(),
+                 description: description,
+                       image: this._resolveRelativeURL($(node).children("image").text(), base),
+                        link: this._resolveRelativeURL($(node).children("link").text() , base),
+                        icon: this._resolveRelativeURL($(node).children("icon").text() , base),
+                       color: $(node).children("color").text(),
+                   textColor: $(node).children("textColor").text(),
+                   hoverText: $(node).children("hoverText").text(),
+                   classname: $(node).children("classname").text(),
+                   tapeImage: $(node).children("tapeImage").text(),
+                  tapeRepeat: $(node).children("tapeRepeat").text(),
+                     caption: $(node).children("caption").text(),
+                     eventID: $(node).children("eventID").text(),
+                    trackNum: $(node).children("trackNum").text()
+            });
+
+            evt._node = node;
+            evt.getProperty = function(name) {
+                return this._node.getAttribute(name);
+            };
+            evt.setWikiInfo(wikiURL, wikiSection);
+
+            this._events.add(evt);
+            
+            added = true;
+        }
+        node = node.nextSibling;
+    }
+	
+	/*
+	var byJob = defaultEvents.groupBy('_start');
+	*/
+	for(var z in eventsArray){
+		console.log(eventsArray[z]._start);
+	}
+	
+
+    if (added) {
+        this._fire("onAddMany", []);
+    }
+};
+
+
 
 
 Timeline.DefaultEventSource.prototype.XMLQueryByID = function(evtID) {
@@ -126,7 +201,7 @@ Timeline.DefaultEventSource.prototype.XMLQueryByID = function(evtID) {
 				node = $(this);
 				var description = "";
 				
-				console.log( node.find("start").first().text()) ;
+				console.log( node.children("title").text() - node.children("start").text()) ;
 				
 				
 				
@@ -135,13 +210,13 @@ Timeline.DefaultEventSource.prototype.XMLQueryByID = function(evtID) {
 				
 				var instant = true;
 				var evt = new Timeline.DefaultEventSource.Event( {
-							  id: node.find("eventID").first().text(),
-						   start: parseDateTimeFunction(node.find("start").first().text()),
-							 end: parseDateTimeFunction(node.find("end").first().text()),
+							  id: node.children("eventID").first().text(),
+						   start: parseDateTimeFunction(node.children("start").text()),
+							 end: parseDateTimeFunction(node.children("end").text()),
 					 latestStart: parseDateTimeFunction(node.attr("latestStart")),
 					 earliestEnd: parseDateTimeFunction(node.attr("earliestEnd")),
 						 instant: instant,
-							text: node.find("title").text(),
+							text: node.children("title").text(),
 					 description: description,
 						   color: node.attr("color"),
 					   textColor: node.attr("textColor"),
@@ -904,4 +979,242 @@ Timeline.DefaultEventSource.Event.prototype = {
     }
 };
 
+
+
+Timeline.DefaultEventSource.SecEvent = function(args) {
+  //
+  // Attention developers!
+  // If you add a new event attribute, please be sure to add it to
+  // all three load functions: loadXML, loadSPARCL, loadJSON. 
+  // Thanks!
+  //
+  // args is a hash/object. It supports the following keys. Most are optional
+  //   id            -- an internal id. Really shouldn't be used by events.
+  //                    Timeline library clients should use eventID
+  //   eventID       -- For use by library client when writing custom painters or
+  //                    custom fillInfoBubble    
+  //   start
+  //   end
+  //   latestStart
+  //   earliestEnd
+  //   instant      -- boolean. Controls precise/non-precise logic & duration/instant issues
+  //   text         -- event source attribute 'title' -- used as the label on Timelines and in bubbles.
+  //   description  -- used in bubbles   
+  //   image        -- used in bubbles
+  //   link         -- used in bubbles
+  //   icon         -- on the Timeline
+  //   color        -- Timeline label and tape color
+  //   textColor    -- Timeline label color, overrides color attribute
+  //   hoverText    -- deprecated, here for backwards compatibility.
+  //                   Superceeded by caption
+  //   caption      -- tooltip-like caption on the Timeline. Uses HTML title attribute 
+  //   classname    -- used to set classname in Timeline. Enables better CSS selector rules
+  //   tapeImage    -- background image of the duration event's tape div on the Timeline
+  //   tapeRepeat   -- repeat attribute for tapeImage. {repeat | repeat-x | repeat-y }
+       
+  function cleanArg(arg) {
+      // clean up an arg
+      return (args[arg] != null && args[arg] != "") ? args[arg] : null;
+  }
+   
+  var id = args.id ? args.id.trim() : "";
+  this._id = id.length > 0 ? id : Timeline.EventUtils.getNewEventID();
+  
+  this._instant = args.instant || (args.end == null);
+  
+  this._start = args.start;
+  this._end = (args.end != null) ? args.end : args.start;
+  
+  this._latestStart = (args.latestStart != null) ?
+                       args.latestStart : (args.instant ? this._end : this._start);
+  this._earliestEnd = (args.earliestEnd != null) ? args.earliestEnd : this._end;
+  
+  // check sanity of dates since incorrect dates will later cause calculation errors
+  // when painting
+  var err=[];
+  if (this._start > this._latestStart) {
+          this._latestStart = this._start;
+          err.push("start is > latestStart");}
+  if (this._start > this._earliestEnd) {
+          this._earliestEnd = this._latestStart;
+          err.push("start is > earliestEnd");}
+  if (this._start > this._end) {
+          this._end = this._earliestEnd;
+          err.push("start is > end");}
+  if (this._latestStart > this._earliestEnd) {
+          this._earliestEnd = this._latestStart;
+          err.push("latestStart is > earliestEnd");}
+  if (this._latestStart > this._end) {
+          this._end = this._earliestEnd;
+          err.push("latestStart is > end");}
+  if (this._earliestEnd > this._end) {
+          this._end = this._earliestEnd;
+          err.push("earliestEnd is > end");}  
+  
+  this._eventID = cleanArg('eventID');
+  this._text = (args.text != null) ? SimileAjax.HTML.deEntify(args.text) : ""; // Change blank titles to ""
+  
+
+  this._description = SimileAjax.HTML.deEntify(args.description);
+  this._image = cleanArg('image');
+  this._link =  cleanArg('link');
+  this._title = cleanArg('hoverText');
+  this._title = cleanArg('caption');
+  
+  this._icon = cleanArg('icon');
+  this._color = cleanArg('color');      
+  this._textColor = cleanArg('textColor');
+  this._classname = cleanArg('classname');
+  this._tapeImage = cleanArg('tapeImage');
+  this._tapeRepeat = cleanArg('tapeRepeat');
+  this._trackNum = cleanArg('trackNum');
+  if (this._trackNum != null) {
+      this._trackNum = parseInt(this._trackNum);
+  }
+    
+  this._wikiURL = null;
+  this._wikiSection = null;
+};
+
+
+Timeline.DefaultEventSource.SecEvent.prototype = {
+    getID:          function() { return this._id; },
+    
+    isInstant:      function() { return this._instant; },
+    isImprecise:    function() { return this._start != this._latestStart || this._end != this._earliestEnd; },
+    
+    getStart:       function() { return this._start; },
+    getEnd:         function() { return this._end; },
+    getLatestStart: function() { return this._latestStart; },
+    getEarliestEnd: function() { return this._earliestEnd; },
+    
+    getEventID:     function() { return this._eventID; },
+    getText:        function() { return this._text; }, // title
+    getDescription: function() { return this._description; },
+    getImage:       function() { return this._image; },
+    getLink:        function() { return this._link; },
+    
+    getIcon:        function() { return this._icon; },
+    getColor:       function() { return this._color; },
+    getTextColor:   function() { return this._textColor; },
+    getClassName:   function() { return this._classname; },
+    getTapeImage:   function() { return this._tapeImage; },
+    getTapeRepeat:  function() { return this._tapeRepeat; },
+    getTrackNum:    function() { return this._trackNum; },
+    
+    getProperty:    function(name) { return null; },
+    
+    getWikiURL:     function() { return this._wikiURL; },
+    getWikiSection: function() { return this._wikiSection; },
+    setWikiInfo: function(wikiURL, wikiSection) {
+        this._wikiURL = wikiURL;
+        this._wikiSection = wikiSection;
+    },
+    
+    fillDescription: function(elmt) {
+        elmt.innerHTML = this._description;
+    },
+    fillWikiInfo: function(elmt) {
+        // Many bubbles will not support a wiki link. 
+        // 
+        // Strategy: assume no wiki link. If we do have
+        // enough parameters for one, then create it.
+        elmt.style.display = "none"; // default
+        
+        if (this._wikiURL == null || this._wikiSection == null) {
+          return; // EARLY RETURN
+        }
+
+        // create the wikiID from the property or from the event text (the title)      
+        var wikiID = this.getProperty("wikiID");
+        if (wikiID == null || wikiID.length == 0) {
+            wikiID = this.getText(); // use the title as the backup wiki id
+        }
+        
+        if (wikiID == null || wikiID.length == 0) {
+          return; // No wikiID. Thus EARLY RETURN
+        }
+          
+        // ready to go...
+        elmt.style.display = "inline";
+        wikiID = wikiID.replace(/\s/g, "_");
+        var url = this._wikiURL + this._wikiSection.replace(/\s/g, "_") + "/" + wikiID;
+        var a = document.createElement("a");
+        a.href = url;
+        a.target = "new";
+        a.innerHTML = Timeline.strings[Timeline.clientLocale].wikiLinkLabel;
+        
+        elmt.appendChild(document.createTextNode("["));
+        elmt.appendChild(a);
+        elmt.appendChild(document.createTextNode("]"));
+    },
+    
+    fillTime: function(elmt, labeller) {
+        if (this._instant) {
+            if (this.isImprecise()) {
+                elmt.appendChild(elmt.ownerDocument.createTextNode(labeller.labelPrecise(this._start)));
+                elmt.appendChild(elmt.ownerDocument.createElement("br"));
+                elmt.appendChild(elmt.ownerDocument.createTextNode(labeller.labelPrecise(this._end)));
+            } else {
+                elmt.appendChild(elmt.ownerDocument.createTextNode(labeller.labelPrecise(this._start)));
+            }
+        } else {
+            if (this.isImprecise()) {
+                elmt.appendChild(elmt.ownerDocument.createTextNode(
+                    labeller.labelPrecise(this._start) + " ~ " + labeller.labelPrecise(this._latestStart)));
+                elmt.appendChild(elmt.ownerDocument.createElement("br"));
+                elmt.appendChild(elmt.ownerDocument.createTextNode(
+                    labeller.labelPrecise(this._earliestEnd) + " ~ " + labeller.labelPrecise(this._end)));
+            } else {
+                elmt.appendChild(elmt.ownerDocument.createTextNode(labeller.labelPrecise(this._start)));
+                elmt.appendChild(elmt.ownerDocument.createElement("br"));
+                elmt.appendChild(elmt.ownerDocument.createTextNode(labeller.labelPrecise(this._end)));
+            }
+        }
+    },
+    
+    fillInfoBubble: function(elmt, theme, labeller) {
+        var doc = elmt.ownerDocument;
+        
+        var title = this.getText();
+        var link = this.getLink();
+        var image = this.getImage();
+        
+        if (image != null) {
+            var img = doc.createElement("img");
+            img.src = image;
+            
+            theme.event.bubble.imageStyler(img);
+            elmt.appendChild(img);
+        }
+        
+        var divTitle = doc.createElement("div");
+        var textTitle = doc.createTextNode(title);
+        if (link != null) {
+            var a = doc.createElement("a");
+            a.href = link;
+            a.appendChild(textTitle);
+            divTitle.appendChild(a);
+        } else {
+            divTitle.appendChild(textTitle);
+        }
+        theme.event.bubble.titleStyler(divTitle);
+        elmt.appendChild(divTitle);
+        
+        var divBody = doc.createElement("div");
+        this.fillDescription(divBody);
+        theme.event.bubble.bodyStyler(divBody);
+        elmt.appendChild(divBody);
+        
+        var divTime = doc.createElement("div");
+        this.fillTime(divTime, labeller);
+        theme.event.bubble.timeStyler(divTime);
+        elmt.appendChild(divTime);
+        
+        var divWiki = doc.createElement("div");
+        this.fillWikiInfo(divWiki);
+        theme.event.bubble.wikiStyler(divWiki);
+        elmt.appendChild(divWiki);
+    }
+};
 

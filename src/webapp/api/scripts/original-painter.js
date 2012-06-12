@@ -282,16 +282,22 @@ Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt,
     var clickHandler = function(elmt, domEvt, target) {
         return self._onClickInstantEvent(iconElmtData.elmt, domEvt, evt);
     };
-	
+	/*
 	var clickHandlerByID = function(elmt, domEvt, target) {
         return self._onClickInstantEventByID(iconElmtData.elmt, domEvt, evt);
     };
 	
+	var clickHandlerQueryByID = function(elmt, domEvt, target) {
+        return self._onClickInstantEventQueryByID(iconElmtData.elmt, domEvt, evt);
+    };
 	
-	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerByID);
-	SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandlerByID);
-    //SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
-    //SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
+	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerQueryByID);
+	*/
+	
+	//SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerByID);
+	//SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandlerByID);
+    SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
+    SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
     
     var hDiv = this._createHighlightDiv(highlightIndex, iconElmtData, theme, evt);
     if (hDiv != null) {els.push(hDiv);}
@@ -357,10 +363,10 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
         return self._onClickInstantEventQueryByID(iconElmtData.elmt, domEvt, evt);
     };
 	
-	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerQueryByID);
+	//SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerQueryByID);
 	
-	//SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mouseover", clickHandler);
-    //SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
+	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mouseover", clickHandler);
+    SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
     SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
     SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
     
@@ -657,7 +663,7 @@ Timeline.OriginalEventPainter.prototype._onClickInstantEventQueryByID = function
 	
 	tl.getBand(0)._eventSource.clear(); //CLEAR ALL EVENTS ON TIMELINE
 	
-	eventSource.XMLQueryByID(evt.getID());
+	eventSource.XMLQueryByID(evt.getID()); //CALL of XMLQueryByID function defined in sources.js
 }	
 	
 Timeline.OriginalEventPainter.prototype._onClickInstantEventByID = function(icon, domEvt, evt) {
@@ -688,7 +694,7 @@ Timeline.OriginalEventPainter.prototype._onClickInstantEventByID = function(icon
 
 Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
     var c = SimileAjax.DOM.getPageCoordinates(icon);
-    
+    console.log("_onClickInstantEvent");
 	this._showBubble(
         c.left + Math.ceil(icon.offsetWidth / 2), 
         c.top + Math.ceil(icon.offsetHeight / 2),
@@ -729,7 +735,7 @@ Timeline.OriginalEventPainter.prototype._onClickDurationEvent = function(target,
     }
     this._showBubble(x, y, evt);
     this._fireOnSelect(evt.getID());
-	console.log("duration event caceled bubble" + evt.getID());
+	console.log("onClickDurationEvent cancel bubble " + evt.getID());
     
     domEvt.cancelBubble = true;
     SimileAjax.DOM.cancelEvent(domEvt);

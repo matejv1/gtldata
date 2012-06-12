@@ -99,7 +99,7 @@ Timeline.createBandInfo = function(params) {
     if ("trackGap" in params) {
         eventPainterParams.trackGap = params.trackGap;
     }
-    
+
     var layout = ("overview" in params && params.overview) ? "overview" : ("layout" in params ? params.layout : "original");
     var eventPainter;
     if ("eventPainter" in params) {
@@ -111,6 +111,9 @@ Timeline.createBandInfo = function(params) {
                 break;
             case "detailed" :
                 eventPainter = new Timeline.DetailedEventPainter(eventPainterParams);
+                break;
+            case "sec" :
+                eventPainter = new Timeline.SecEventPainter(eventPainterParams);
                 break;
             default:
                 eventPainter = new Timeline.OriginalEventPainter(eventPainterParams);
@@ -178,6 +181,9 @@ Timeline.createHotZoneBandInfo = function(params) {
                 break;
             case "detailed" :
                 eventPainter = new Timeline.DetailedEventPainter(eventPainterParams);
+                break;
+            case "sec" :
+                eventPainter = new Timeline.SecEventPainter(eventPainterParams);
                 break;
             default:
                 eventPainter = new Timeline.OriginalEventPainter(eventPainterParams);

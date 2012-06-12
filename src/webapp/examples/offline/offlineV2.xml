@@ -48,85 +48,137 @@
 	
 	<event>
 		<start>Sat Jun 5 2012 00:00:00 GMT-1000</start>
+		<end>Sat Jun 8 2012 00:00:00 GMT-1600</end>
 		<title>DIV EVENT ID 18 </title>
+		<description>This is some description for this event and all the others</description>
+		<isDuration>true</isDuration>
 		<eventID>18</eventID>
 		<events>
 			<event>
-				<start>Sat Jun 5 2012 00:00:00 GMT-1000</start>
-				<end>Sat Jun 6 2012 00:00:00 GMT-1100</end>
+				<start>Sat Jun 5 2012 00:00:00 GMT-1100</start>
+				<end>Sat Jun 6 2012 00:00:00 GMT-1600</end>
 				<title>DIV EVENT ID 181</title>
+				<isDuration>true</isDuration>
 				<eventID>181</eventID>
-
 				<events>
 					<event>
 						<start>Sat Jun 5 2012 00:00:00 GMT-1200</start>
+						<end>Sat Jun 5 2012 00:00:00 GMT-1400</end>
 						<title>DIV EVENT ID 1811</title>
 						<eventID>1811</eventID>
-						<isDuration>false</isDuration>
+						<isDuration>true</isDuration>
 					</event>
 					<event>
 						<start>Sat Jun 5 2012 00:00:00 GMT-1400</start>
+						<end>Sat Jun 5 2012 00:00:00 GMT-1420</end>
 						<title>DIV EVENT ID 1812</title>
 						<eventID>1812</eventID>
-						<isDuration>false</isDuration>
+						<isDuration>true</isDuration>
 					</event>
 					<event>
 						<start>Sat Jun 5 2012 00:00:00 GMT-1600</start>
 						<title>DIV EVENT ID 1813</title>
 						<eventID>1813</eventID>
-						<isDuration>false</isDuration>
+						<isDuration>true</isDuration>
 					</event>
 				</events>
 			</event>
 			<event>
 				<start>Sat Jun 5 2012 00:00:00 GMT-1040</start>
+				<end>Sat Jun 5 2012 00:00:00 GMT-1050</end>
 				<title>DIV EVENT ID 182</title>
 				<eventID>182</eventID>
-				
+				<isDuration>true</isDuration>
 			</event>
 			
 			<event>
 				<start>Sat Jun 5 2012 00:00:00 GMT-1120</start>
 				<title>DIV EVENT ID 183</title>
 				<eventID>183</eventID>
-			
+				<isDuration>true</isDuration>
 
 			</event>
 		</events>
 	</event>
 	<event>
-		<start>Sat Jun 2 2012 00:00:00 GMT-1000</start>
-		<end>Sat Jun 2 2012 00:00:00 GMT-1500</end>
-		<title>This is some div content 22 </title>
+		<start>Sat Jun 5 2012 00:00:00 GMT-1200</start>
+		<title>DIV EVENT ID 27 </title>
+		<description>This is some description for this event and all the others</description>
+		<isDuration>false</isDuration>
+		<eventID>27</eventID>
+	</event>
+	
+	<event>
+		<start>Sat Jun 5 2012 00:00:00 GMT-1250</start>
+		<title>DIV EVENT ID 28 </title>
+		<description>This is some description for this event and all the others</description>
+		<isDuration>false</isDuration>
+		<eventID>28</eventID>
+	</event>
+	
+	<event>
+		<start>Sat Jun 5 2012 00:00:00 GMT-1220</start>
+		<end>Sat Jun 5 2012 00:00:00 GMT-1920</end>
+		<title>DIV EVENT ID 29 </title>
+		<description>This is some description for this event and all the others</description>
 		<isDuration>true</isDuration>
+		<eventID>29</eventID>
+	</event>
+	
+	<event>
+		<start>Sat Jun 5 2012 00:00:00 GMT-1225</start>
+		<latestStart>Sat Jun 5 2012 00:00:00 GMT-1535</latestStart>
+		<earliestEnd>Sat Jun 5 2012 00:00:00 GMT-1925</earliestEnd>
+		<end>Sat Jun 5 2012 00:00:00 GMT-2125</end>
+		<title>DIV EVENT ID 30 </title>
+		<description>This is some description for this event and all the others</description>
+		<isDuration>true</isDuration>
+		<eventID>30</eventID>
+	</event>
+	
+	
+	<event>
+		<start>Sat Jun 5 2012 00:00:00 GMT-0425</start>
+		<end>Sat Jun 5 2012 00:00:00 GMT-1025</end>
+		<title>DIV EVENT ID 45 </title>
+		<description>This is some description for this event and all the others</description>
+		<isDuration>true</isDuration>
+		<eventID>45</eventID>
+	</event>
+	
+	<event>
+		<start>Sat Jun 5 2012 00:00:00 GMT-1000</start>
+		<end>Sat Jun 5 2012 00:00:00 GMT-1500</end>
+		<title>This is some div content 19</title>
+	
 		<eventID>19</eventID>
 		<events>
 			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<start>Sat Jun 5 2012 00:00:00 GMT-0800</start>
 				<title>thisi child</title>
 			</ev>
 			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
+				<start>Sat Jun 5 2012 00:00:00 GMT-0800</start>
 				<title>thisi child</title>
 			</ev>
 			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
+				<start>Sat Jun 5 2012 00:00:00 GMT-1200</start>
 				<title>thisi child</title>
 			</ev>
 			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0900</start>
+				<start>Sat Jun 5 2012 00:00:00 GMT-0900</start>
 				<title>thisi child</title>
 			</ev>
 			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0400</start>
+				<start>Sat Jun 5 2012 00:00:00 GMT-0400</start>
 				<title>thisi child</title>
 			</ev>
 			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0300</start>
+				<start>Sat Jun 5 2012 00:00:00 GMT-0300</start>
 				<title>thisi child</title>
 			</ev>
 			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0200</start>
+				<start>Sat Jun 5 2012 00:00:00 GMT-0200</start>
 				<title>thisi child</title>
 			</ev>
 		</events>
@@ -179,43 +231,6 @@
 				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
 				<title>thisi child</title>
 				<isDuration>false</isDuration>
-			</ev>
-			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
-				<title>thisi child</title>
-			</ev>
-			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-1200</start>
-				<title>thisi child</title>
-			</ev>
-			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0900</start>
-				<title>thisi child</title>
-			</ev>
-			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0400</start>
-				<title>thisi child</title>
-			</ev>
-			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0300</start>
-				<title>thisi child</title>
-			</ev>
-			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0200</start>
-				<title>thisi child</title>
-			</ev>
-		</events>
-	</event>
-	
-	<event>
-		<start>Sat Jun 2 2012 00:00:00 GMT-1000</start>
-		<end>Sat Jun 2 2012 00:00:00 GMT-1500</end>
-		<title>This is some div content 22 </title>
-		<eventID>19</eventID>
-		<events>
-			<ev>
-				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>
-				<title>thisi child</title>
 			</ev>
 			<ev>
 				<start>Sat Jun 1 2012 00:00:00 GMT-0800</start>

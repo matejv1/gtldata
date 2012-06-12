@@ -28,8 +28,10 @@
             
             theme = Timeline.ClassicTheme.create();
             theme.event.bubble.width = 250;
+            theme.event.tape.height = 30;
+            theme.event.track.height = 30;
+            theme.mouseWheel = 'scroll';
 			
-	    
             
             var date = "Jun 05 2012 13:00:00 GMT-0600"
             var bandInfos = [
@@ -42,24 +44,26 @@
                     date:           date,
                     timeZone:       0,
                     theme:          theme,
-		    zoomIndex:      5,
-		    zoomSteps:      new Array(
-		      {pixelsPerInterval: 280,  unit: Timeline.DateTime.HOUR},
-		      {pixelsPerInterval: 140,  unit: Timeline.DateTime.HOUR},
-		      {pixelsPerInterval: 70,  unit: Timeline.DateTime.HOUR},
-		      {pixelsPerInterval: 35,  unit: Timeline.DateTime.HOUR}
-		    )
+                    layout:         'sec',
+				    zoomIndex:      5,
+				    zoomSteps:      new Array(
+				      {pixelsPerInterval: 280,  unit: Timeline.DateTime.HOUR},
+				      {pixelsPerInterval: 140,  unit: Timeline.DateTime.HOUR},
+				      {pixelsPerInterval: 70,  unit: Timeline.DateTime.HOUR},
+				      {pixelsPerInterval: 35,  unit: Timeline.DateTime.HOUR}
+				    )
                 }),
                 Timeline.createHotZoneBandInfo({
                     width:          "10%", 
                     intervalUnit:   Timeline.DateTime.DAY, 
-                    intervalPixels: 100,
+                    intervalPixels: 300,
                     zones:          zones2, 
                     eventSource:    eventSource,
                     date:           date, 
                     timeZone:       0,
                     overview:       true,
-                    theme:          theme
+                    theme:          theme,
+                    layout:         'sec'
                 }),
                 Timeline.createHotZoneBandInfo({
                     width:          "10%", 
@@ -89,16 +93,12 @@
 	    
 			bandInfos[2].syncWith = 1;
             bandInfos[2].highlight = true;
-
 	    
             bandInfos[3].syncWith = 2;
             bandInfos[3].highlight = true;
 
-            
-            
-            
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
-            tl.loadXML("offlineV2.xml", function(xml, url) { eventSource.loadXMLV2(xml, url); });
+            tl.loadXML("offlineV2.xml", function(xml, url) { eventSource.loadXMLByjQuery(xml, url); });
             
             //setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
         }

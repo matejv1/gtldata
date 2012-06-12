@@ -84,6 +84,7 @@
             "original-painter.js",
             "detailed-painter.js",
             "overview-painter.js",
+            'sec-painter.js',
             "compact-painter.js",
             "decorators.js",
             "units.js"
