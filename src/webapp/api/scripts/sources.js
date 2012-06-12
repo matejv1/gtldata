@@ -141,6 +141,7 @@ Timeline.DefaultEventSource.prototype.loadXMLByjQuery = function(xml, url) {
                  earliestEnd: parseDateTimeFunction($(node).children("earliestEnd").text()),
                      instant: instant,
                         text: $(node).children("title").text(),
+                childCounter: $(node).children("events").children().length,
                  description: description,
                        image: this._resolveRelativeURL($(node).children("image").text(), base),
                         link: this._resolveRelativeURL($(node).children("link").text() , base),
@@ -201,6 +202,13 @@ Timeline.DefaultEventSource.prototype.XMLQueryByID = function(evtID) {
 				node = $(this);
 				var description = "";
 				
+				
+				var instant = ($(node).children("isDuration").text()  === null &&
+                           $(node).children("durationEvent").text() === null) ||
+                          $(node).children("isDuration").text() == "false" ||
+                          $(node).children("durationEvent").text() == "false";
+				
+				
 				console.log( node.children("title").text() - node.children("start").text()) ;
 				
 				
@@ -209,7 +217,7 @@ Timeline.DefaultEventSource.prototype.XMLQueryByID = function(evtID) {
 				
 				
 				var instant = true;
-				var evt = new Timeline.DefaultEventSource.Event( {
+				var evt = new Timeline.DefaultEventSource.SecEvent( {
 							  id: node.children("eventID").first().text(),
 						   start: parseDateTimeFunction(node.children("start").text()),
 							 end: parseDateTimeFunction(node.children("end").text()),
@@ -217,6 +225,7 @@ Timeline.DefaultEventSource.prototype.XMLQueryByID = function(evtID) {
 					 earliestEnd: parseDateTimeFunction(node.attr("earliestEnd")),
 						 instant: instant,
 							text: node.children("title").text(),
+					childCounter: $(node).children("events").children().length,
 					 description: description,
 						   color: node.attr("color"),
 					   textColor: node.attr("textColor"),
@@ -337,168 +346,6 @@ Timeline.DefaultEventSource.prototype.loadXMLV2 = function(xml, url) {
 
 
 
-
-Timeline.DefaultEventSource.prototype.loadXMLByID = function(xml, url, evtID) {
-    var base = this._getBaseURL(url);
-    var thisDefaultEvent = this;
-    var wikiURL = xml.documentElement.getAttribute("wiki-url");
-    var wikiSection = xml.documentElement.getAttribute("wiki-section");
-
-    var dateTimeFormat = xml.documentElement.getAttribute("date-time-format");
-    var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
-
-    var node = xml.documentElement.firstChild;
-	loadedXML = xml;
-    var added = false;
-	
-	var eventsCounter = $(xml).find("eventID");
-
-	
-	$(xml).find("eventID").each(function(){
-		console.log($(this).text() + " each eventID + " + evtID);
-		if($(this).text() == evtID){
-			//console.log("IT IS ");
-			console.log("Number of events children : " + $(this).siblings("events").children().length);
-			$(this).siblings("events").children().each(function(){
-				
-				node = $(this);
-				var description = "";
-				// instant event: default is true. Or use values from isDuration or durationEvent
-				var isDuration = false;
-				//console.log( node + "S : " + node.find("start").text() + " - E : " + node.find("end").text());
-				
-				var instant = true;
-				var evt = new Timeline.DefaultEventSource.Event( {
-							  id: node.find("eventID").first().text(),
-						   start: parseDateTimeFunction(node.find("start").first().text()),
-							 end: parseDateTimeFunction(node.find("end").first().text()),
-					 latestStart: parseDateTimeFunction(node.attr("latestStart")),
-					 earliestEnd: parseDateTimeFunction(node.attr("earliestEnd")),
-						 instant: instant,
-							text: node.find("title").text(),
-					 description: description,
-						   image: thisDefaultEvent._resolveRelativeURL(node.attr("image"), base),
-							link: thisDefaultEvent._resolveRelativeURL(node.attr("link") , base),
-							icon: thisDefaultEvent._resolveRelativeURL(node.attr("icon") , base),
-						   color: node.attr("color"),
-					   textColor: node.attr("textColor"),
-					   hoverText: node.attr("hoverText"),
-					   classname: node.attr("classname"),
-					   tapeImage: node.attr("tapeImage"),
-					  tapeRepeat: node.attr("tapeRepeat"),
-						 caption: node.attr("caption"),
-						 eventID: node.attr("eventID"),
-						trackNum: node.attr("trackNum")
-				});
-
-				evt._node = node;
-				evt.getProperty = function(name) {
-					return this._node.getAttribute(name);
-				};
-				evt.setWikiInfo(wikiURL, wikiSection);
-
-				thisDefaultEvent._events.add(evt);
-				
-				added = true;
-			});
-			
-		}
-
-	});
-
-	/*
-	var byJob = defaultEvents.groupBy('_start');
-	*/
-	for(var z in eventsArray){
-		console.log(eventsArray[z]._start);
-	}
-	
-
-    if (added) {
-        this._fire("onAddMany", []);
-    }
-};
-
-
-
-Timeline.DefaultEventSource.prototype.loadXMLGroup = function(xml, url) {
-    var base = this._getBaseURL(url);
-    
-    var wikiURL = xml.documentElement.getAttribute("wiki-url");
-    var wikiSection = xml.documentElement.getAttribute("wiki-section");
-
-    var dateTimeFormat = xml.documentElement.getAttribute("date-time-format");
-    var parseDateTimeFunction = this._events.getUnit().getParser(dateTimeFormat);
-
-    var node = xml.documentElement.firstChild;
-	loadedXML = xml;
-    var added = false;
-	
-	
-	while(node != null){
-		if (node.nodeType == 1) {
-		
-			var description = "";
-            if (node.firstChild != null && node.firstChild.nodeType == 3) {
-                description = node.firstChild.nodeValue;
-            }
-			
-			var instant = (node.getAttribute("isDuration")    === null &&
-                           node.getAttribute("durationEvent") === null) ||
-                          node.getAttribute("isDuration") == "false" ||
-                          node.getAttribute("durationEvent") == "false";
-	
-		
-			var evt = new Timeline.DefaultEventSource.Event( {
-                          id: node.getElementsByTagName("eventID")[0].childNodes[0].nodeValue,
-                       start: parseDateTimeFunction(node.getAttribute("start")),
-                         end: parseDateTimeFunction(node.getAttribute("end")),
-                 latestStart: parseDateTimeFunction(node.getAttribute("latestStart")),
-                 earliestEnd: parseDateTimeFunction(node.getAttribute("earliestEnd")),
-                     instant: instant,
-                        text: node.childNodes.length,
-                 description: description,
-                       image: this._resolveRelativeURL(node.getAttribute("image"), base),
-                        link: this._resolveRelativeURL(node.getAttribute("link") , base),
-                        icon: this._resolveRelativeURL(node.getAttribute("icon") , base),
-                       color: node.getAttribute("color"),
-                   textColor: node.getAttribute("textColor"),
-                   hoverText: node.getAttribute("hoverText"),
-                   classname: node.getAttribute("classname"),
-                   tapeImage: node.getAttribute("tapeImage"),
-                  tapeRepeat: node.getAttribute("tapeRepeat"),
-                     caption: node.getAttribute("caption"),
-                     eventID: node.getAttribute("eventID"),
-                    trackNum: node.getAttribute("trackNum")
-            });
-			
-			evt._node = node;
-            evt.getProperty = function(name) {
-                return this._node.getAttribute(name);
-            };
-            evt.setWikiInfo(wikiURL, wikiSection);
-
-            this._events.add(evt);
-            
-            added = true;
-			
-		}
-		
-		node = node.nextSibling;
-	}
-	
-	/*
-	var byJob = defaultEvents.groupBy('_start');
-	*/
-	for(var z in eventsArray){
-		console.log(eventsArray[z]._start);
-	}
-	
-
-    if (added) {
-        this._fire("onAddMany", []);
-    }
-};
 
 
 
@@ -1055,6 +902,7 @@ Timeline.DefaultEventSource.SecEvent = function(args) {
   this._text = (args.text != null) ? SimileAjax.HTML.deEntify(args.text) : ""; // Change blank titles to ""
   
 
+  this._childCounter =  cleanArg('childCounter');
   this._description = SimileAjax.HTML.deEntify(args.description);
   this._image = cleanArg('image');
   this._link =  cleanArg('link');
@@ -1087,7 +935,7 @@ Timeline.DefaultEventSource.SecEvent.prototype = {
     getEnd:         function() { return this._end; },
     getLatestStart: function() { return this._latestStart; },
     getEarliestEnd: function() { return this._earliestEnd; },
-    
+    getChildCounter:function() { return this._childCounter; },   
     getEventID:     function() { return this._eventID; },
     getText:        function() { return this._text; }, // title
     getDescription: function() { return this._description; },

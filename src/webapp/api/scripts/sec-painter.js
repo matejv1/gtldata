@@ -230,24 +230,30 @@ Timeline.SecEventPainter.prototype.paintCustomEvent = function(evt, metrics, the
 Timeline.SecEventPainter.prototype.paintEvent = function(evt, metrics, theme, highlightIndex) {
     //this.paintCustomPreciseInstantEvent(evt, metrics, theme, highlightIndex);
 	if (evt.isInstant()) {
+		console.log(evt.getID());
         this.paintInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
+    	console.log("Duration Event - " + evt.getID());
         this.paintDurationEvent(evt, metrics, theme, highlightIndex);
     }
 };
     
 Timeline.SecEventPainter.prototype.paintInstantEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isImprecise()) {
+    	console.log("Instant isImprecise() - " + evt.getID());
         this.paintImpreciseInstantEvent(evt, metrics, theme, highlightIndex);
     } else {
+    	console.log("Instant Precise() - " + evt.getID());
         this.paintPreciseInstantEvent(evt, metrics, theme, highlightIndex);
     }
 }
 
 Timeline.SecEventPainter.prototype.paintDurationEvent = function(evt, metrics, theme, highlightIndex) {
     if (evt.isImprecise()) {
+       	console.log("Dureation Imprecise() - " + evt.getID());
         this.paintImpreciseDurationEvent(evt, metrics, theme, highlightIndex);
     } else {
+    	console.log("Dureation Precise() - " + evt.getID());
         this.paintPreciseDurationEvent(evt, metrics, theme, highlightIndex);
     }
 }
@@ -276,7 +282,12 @@ Timeline.SecEventPainter.prototype.paintPreciseInstantEvent = function(evt, metr
     var iconElmtData = this._paintEventIcon(evt, track, iconLeftEdge, metrics, theme, 0);
     var labelElmtData = this._paintEventLabel(evt, text, labelLeft, labelTop, labelSize.width,
         labelSize.height, theme, labelDivClassName, highlightIndex);
-    var els = [iconElmtData.elmt, labelElmtData.elmt];
+        
+    var countElemtData = this._paintEventCount(evt, track, startPixel, endPixel = 0, 
+        color = "#cc0000", theme.event.instant.impreciseOpacity, metrics, theme, 0);    
+        
+
+    var els = [iconElmtData.elmt, labelElmtData.elmt,countElemtData.elmt];
 
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -293,7 +304,11 @@ Timeline.SecEventPainter.prototype.paintPreciseInstantEvent = function(evt, metr
     };
 	
 	//SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerQueryByID);
-	
+	var clickHandlerQueryByID = function(elmt, domEvt, target) {
+        return self._onClickInstantEventQueryByID(tapeElmtData.elmt, domEvt, evt);
+    };
+    SimileAjax.DOM.registerEvent(countElemtData.elmt, "mousedown", clickHandlerQueryByID);
+    
 	
 	//SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerByID);
 	//SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandlerByID);
@@ -347,7 +362,11 @@ Timeline.SecEventPainter.prototype.paintImpreciseInstantEvent = function(evt, me
 
     var tapeElmtData = this._paintEventTape(evt, track, startPixel, endPixel, 
         color, theme.event.instant.impreciseOpacity, metrics, theme, 0);
-    var els = [iconElmtData.elmt, labelElmtData.elmt, tapeElmtData.elmt];    
+        
+    var countElemtData = this._paintEventCount(evt, track, startPixel, endPixel, 
+        color, theme.event.instant.impreciseOpacity, metrics, theme, 0);    
+        
+    var els = [iconElmtData.elmt, labelElmtData.elmt, tapeElmtData.elmt, countElemtData.elmt];    
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
@@ -365,6 +384,14 @@ Timeline.SecEventPainter.prototype.paintImpreciseInstantEvent = function(evt, me
     };
 	
 	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandlerQueryByID);
+	
+	
+	
+	var clickHandlerQueryByID = function(elmt, domEvt, target) {
+        return self._onClickInstantEventQueryByID(tapeElmtData.elmt, domEvt, evt);
+    };
+    SimileAjax.DOM.registerEvent(countElemtData.elmt, "mousedown", clickHandlerQueryByID);
+    
 	
 	//SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mouseover", clickHandler);
     //SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
@@ -404,12 +431,24 @@ Timeline.SecEventPainter.prototype.paintPreciseDurationEvent = function(evt, met
     var tapeElmtData = this._paintEventTape(evt, track, startPixel, endPixel, color, 100, metrics, theme, 0);
     var labelElmtData = this._paintDurationEventLabel(evt, text, labelLeft, labelTop, labelSize.width,
       labelSize.height, theme, labelDivClassName, highlightIndex);
-    var els = [tapeElmtData.elmt, labelElmtData.elmt];
+    
+    var countElemtData = this._paintEventCount(evt, track, startPixel, endPixel = 0, 
+        color = "#cc0000", theme.event.instant.impreciseOpacity, metrics, theme, 0);    
+        
+    
+    var els = [tapeElmtData.elmt, labelElmtData.elmt,countElemtData.elmt];
     
     var self = this;
     var clickHandler = function(elmt, domEvt, target) {
         return self._onClickDurationEvent(tapeElmtData.elmt, domEvt, evt);
     };
+    
+    var clickHandlerQueryByID = function(elmt, domEvt, target) {
+        return self._onClickInstantEventQueryByID(tapeElmtData.elmt, domEvt, evt);
+    };
+    SimileAjax.DOM.registerEvent(countElemtData.elmt, "mousedown", clickHandlerQueryByID);
+    
+    
     SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
     //SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
     
@@ -459,13 +498,24 @@ Timeline.SecEventPainter.prototype.paintImpreciseDurationEvent = function(evt, m
     
     var labelElmtData = this._paintDurationEventLabel(evt, text, labelLeft, labelTop,
         labelSize.width, labelSize.height, theme, labelDivClassName, highlightIndex);
-    var els = [impreciseTapeElmtData.elmt, tapeElmtData.elmt, labelElmtData.elmt];
+        
+     var countElemtData = this._paintEventCount(evt, track, startPixel, endPixel = 0, 
+        color = "#cc0000", theme.event.instant.impreciseOpacity, metrics, theme, 0); 
+        
+        
+    var els = [impreciseTapeElmtData.elmt, tapeElmtData.elmt, labelElmtData.elmt,countElemtData];
     
     var self = this;
+    
+    
     var clickHandler = function(elmt, domEvt, target) {
         return self._onClickDurationEvent(tapeElmtData.elmt, domEvt, evt);
     };
     
+    var clickHandlerQueryByID = function(elmt, domEvt, target) {
+        return self._onClickInstantEventQueryByID(tapeElmtData.elmt, domEvt, evt);
+    };
+    SimileAjax.DOM.registerEvent(countElemtData.elmt, "mousedown", clickHandlerQueryByID);
     
     
     
@@ -520,6 +570,7 @@ Timeline.SecEventPainter.prototype._paintEventIcon = function(evt, iconTrack, le
     iconDiv.className = this._getElClassName('timeline-event-icon', evt, 'icon');
     iconDiv.id = this._encodeEventElID('icon', evt);
     iconDiv.style.left = left + "px";
+    iconDiv.style.display = "none";
     iconDiv.style.top = top + "px";
     iconDiv.appendChild(img);
 
@@ -539,6 +590,64 @@ Timeline.SecEventPainter.prototype._paintEventIcon = function(evt, iconTrack, le
 
 
 
+
+
+Timeline.SecEventPainter.prototype._paintEventCount = function(evt, iconTrack, startPixel, endPixel, color, opacity, metrics, theme, tape_index) {
+    
+    var tapeWidth = endPixel - startPixel;
+    var tapeHeight = theme.event.tape.height;
+    var top = metrics.trackOffset + iconTrack * metrics.trackIncrement;
+    
+    var divCounter = this._timeline.getDocument().createElement("div");
+	divCounter.innerHTML = (evt.getChildCounter() == null) ? "1" : evt.getChildCounter();
+    divCounter.className = "timeline-event-counter";
+    
+    var tapeDiv = this._timeline.getDocument().createElement("div");
+    tapeDiv.className = this._getElClassName('timeline-event-tape', evt, 'tape');
+    
+    
+    
+    
+    
+    tapeDiv.id = this._encodeEventElID('tape' + tape_index, evt);
+    tapeDiv.style.left = startPixel - 30 + "px";
+    tapeDiv.style.width = 30 + "px";
+    tapeDiv.style.height = tapeHeight + "px";
+    tapeDiv.style.top = top + "px";
+	tapeDiv.appendChild(divCounter);
+	
+	
+	
+	
+    if(evt._title != null)
+        tapeDiv.title = evt._title;   
+   
+    if(color != null) {
+        tapeDiv.style.backgroundColor = "#58A0DC";
+    }
+    
+    var backgroundImage = evt.getTapeImage();
+    var backgroundRepeat = evt.getTapeRepeat();
+    backgroundRepeat = backgroundRepeat != null ? backgroundRepeat : 'repeat';
+    if(backgroundImage != null) {
+      tapeDiv.style.backgroundImage = "url(" + backgroundImage + ")";
+      tapeDiv.style.backgroundRepeat = backgroundRepeat;
+    } 	
+    
+    
+        
+    this._eventLayer.appendChild(tapeDiv);
+    
+    return {
+        left:   startPixel,
+        top:    top,
+        width:  tapeWidth,
+        height: tapeHeight,
+        elmt:   tapeDiv
+    };
+}
+
+
 Timeline.SecEventPainter.prototype._paintDurationEventLabel = function(evt, text, left, top, width,
     height, theme, labelDivClassName, highlightIndex) {
     var doc = this._timeline.getDocument();
@@ -547,9 +656,9 @@ Timeline.SecEventPainter.prototype._paintDurationEventLabel = function(evt, text
     labelDiv.className = labelDivClassName;
     labelDiv.id = this._encodeEventElID('label', evt);
     labelDiv.style.left = left + 5 + "px";
-    labelDiv.style.width = width + "px";
+    labelDiv.style.width = "auto";
     labelDiv.style.top = top - 21 + "px";
-    labelDiv.innerHTML = text;
+    labelDiv.innerHTML = "<span style='font-size:8px'>OD</span><span class='od-value'> " + new Date(evt.getStart()).toString("HH:mm:ss") + "</span> - <span style='font-size:8px'>DO</span><span class='od-value'> " + new Date(evt.getEnd()).toString("HH:mm:ss") + "</span>";
 
     if(evt._title != null)
         labelDiv.title = evt._title;    
